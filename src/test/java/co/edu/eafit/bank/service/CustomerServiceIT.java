@@ -1,4 +1,4 @@
-package co.edu.eafit.bank.repository;
+package co.edu.eafit.bank.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -14,22 +14,23 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import co.edu.eafit.bank.domain.Customer;
 import co.edu.eafit.bank.domain.DocumentType;
+import co.edu.eafit.bank.repository.DocumentTypeRepository;
 import lombok.extern.slf4j.Slf4j;
 
 @SpringBootTest
 @Slf4j
 @TestMethodOrder(OrderAnnotation.class)
-class CustomerRepositoryIT {
+class CustomerServiceIT {
 	
 	@Autowired
-	CustomerRepository customerRepository;
+	CustomerService customerService;
 	
 	@Autowired
 	DocumentTypeRepository documentTypeRepository;
 
 	@Test
 	@Order(1)
-	void debeCrearUnCustomer() {
+	void debeCrearUnCustomer() throws Exception {
 		// Arrange
 		Integer idDocumentType = 1;
 		Integer idCustomer = 1456454;
@@ -52,7 +53,7 @@ class CustomerRepositoryIT {
 		
 		// Act
 		
-		customer = customerRepository.save(customer);
+		customer = customerService.save(customer);
 				
 		// Assert
 		assertNotNull(customer, "El customer es nulo no se grabo");
@@ -61,14 +62,14 @@ class CustomerRepositoryIT {
 	
 	@Test
 	@Order(2)
-	void debeModificarUnCustomer() {
+	void debeModificarUnCustomer() throws Exception {
 		// Arrange
 		Integer idCustomer = 1456454;
 		
 		Customer customer = null;
 		Optional<Customer> customerOptional = null;
 				
-		customerOptional =  customerRepository.findById(idCustomer);
+		customerOptional =  customerService.findById(idCustomer);
 				
 		if (customerOptional.isEmpty() == true) {
 			throw new RuntimeException("El customer no existe");
@@ -80,7 +81,7 @@ class CustomerRepositoryIT {
 		String nameExpected = "Jhonnatan J";
 				
 		// Act		
-		customer = customerRepository.save(customer);
+		customer = customerService.update(customer);
 						
 		// Assert
 		assertNotNull(customer, "El customer es nulo no se grabo");
@@ -90,14 +91,14 @@ class CustomerRepositoryIT {
 	
 	@Test
 	@Order(3)
-	void debeBorrarUnCustomer() {
+	void debeBorrarUnCustomer() throws Exception {
 		// Arrange
 		Integer idCustomer = 1456454;
 		
 		Customer customer = null;
 		Optional<Customer> customerOptional = null;
 				
-		customerOptional = customerRepository.findById(idCustomer);
+		customerOptional = customerService.findById(idCustomer);
 				
 		if (customerOptional.isEmpty() == true) {
 			throw new RuntimeException("El customer no existe");
@@ -106,10 +107,9 @@ class CustomerRepositoryIT {
 		customer = customerOptional.get();
 				
 		// Act		
-		customerRepository.delete(customer);
+		customerService.delete(customer);
 						
 		// Assert
-		assertNull(customer, "El customer no se borro");
 		
 	}
 	
@@ -122,7 +122,7 @@ class CustomerRepositoryIT {
 		Integer id = 1;
 				
 		// Act
-		customerOptional = customerRepository.findById(id);
+		customerOptional = customerService.findById(id);
 		
 		// Assert
 		assertNotNull(customerOptional);
@@ -140,18 +140,11 @@ class CustomerRepositoryIT {
 		List<Customer> customers = null;
 				
 		// Act
-		customers = customerRepository.findAll();
+		customers = customerService.findAll();
 		
 		// Assert
 		assertNotNull(customers);
 		assertFalse(customers.isEmpty());
-		
-		//No deberia estar en la prueba
-		//customers.forEach(cust->{
-		//	log.info(cust.getName());
-		//});
-		
-		//customers.forEach(cust->log.info(cust.getName()));
 	}
 	
 
