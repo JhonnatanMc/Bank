@@ -3,6 +3,8 @@ package co.edu.eafit.bank.service;
 import java.util.List;
 import java.util.Optional;
 
+import co.edu.eafit.bank.domain.Users;
+
 /**
  * @author Zathura Code Generator Version 9.0 http://zathuracode.org/
  *         www.zathuracode.org
